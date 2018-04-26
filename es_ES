@@ -64,8 +64,8 @@
   "SHOP__PAYSAFECARD_ENABLE_SUCCESS": "Les PaySafeCard fueron bien activado !",
   "SHOP__PAYSAFECARD_ERROR_ALREADY_TOO_PSC_IN_DB":"Tiene 2 PaySafeCards pendiente",
   "SHOP__PAYSAFECARD_ERROR_ALREADY_IN_DB":"Usted ya tiene esta PaySafeCard pendiente",
-  "SHOP__PAYSAFECARD_VALID_SUCCESS": "La PaySafeCard fuy bien validado !",
-  "SHOP__PAYSAFECARD_INVALID_SUCCESS": "La PaySafeCard fuy bien negado !",
+  "SHOP__PAYSAFECARD_VALID_SUCCESS": "La PaySafeCard fui bien validado !",
+  "SHOP__PAYSAFECARD_INVALID_SUCCESS": "La PaySafeCard fui bien negado !",
   "SHOP__PAYSAFECARD_ADD_SUCCESS":"La PaySafeCard fuy bien añadida ! Usted recibirá una respuesta en 48h",
   "SHOP__PAYSAFECARD_VALID_CONFIRM": "Cuántos puntos tienda quiere darle para esta PaySafeCard ?",
   "SHOP__PAYSAFECARD_MESSAGE_VALID":"Su PaySafeCard de {AMOUNT}€ fuy validado ! Usted recibió {POINTS} {MONEY_NAME}.",
@@ -75,7 +75,7 @@
 
   "SHOP__DEDIPASS_PAYMENT":"Pagar con dédipass",
   "SHOP__DEDIPASS_CONFIGURATION":"Configuración de Dédipass",
-  "SHOP__DEDIPASS_EDIT_CONFIG_SUCCESS":"La Configuración fuy bien editado !",
+  "SHOP__DEDIPASS_EDIT_CONFIG_SUCCESS":"La configuración ha sido bien editado !",
   "SHOP__DEDIPASS_TOGGLE_ERROR_NO_CONFIG":"No se puede activar Dédipass si no ha configurado de clave pública antes !",
   "SHOP__DEDIPASS_TOGGLE_ENABLE_SUCCESS":"Usted desactivó Dédipass como modo de pago !",
   "SHOP__DEDIPASS_TOGGLE_DISABLE_SUCCESS":"Usted activó Dédipass como modo de pago !",
@@ -166,7 +166,7 @@
   "SHOP__BUY_ERROR_NO_CONNECTED":"Usted deba ser conectado en juego para proceder a esta compra.",
   "SHOP__BUY_CONFIRM": "quiere realmente comprar este artículo ?",
   "SHOP__BUY_SUCCESS": "La compra acaba de ser efectuada",
-  "SHOP__BUY_VOUCHER_ASK": "Tenga usted un código promociónnel ?",
+  "SHOP__BUY_VOUCHER_ASK": "Usted tiene un código promociónnel ?",
 
   "SHOP__ADD_MONEY":"Acreditar su cuanta",
   "SHOP__MONEY_CURRENTLY": "Usted tiene actualmente",
