@@ -55,7 +55,9 @@ class ShopController extends ShopAppController
 	if ($vanow > $vagoal){
 		$vanow = $vagoal;
 	}
-	$vawidth = round((str_replace(",", '.', $vanow*100/$vagoal)));
+	if ($vagoal != 0){
+		$vawidth = round((str_replace(",", '.', $vanow*100/$vagoal)));
+	}
 		
         $search_categories = $this->Category->find('all'); // on cherche toutes les catégories et on envoie à la vue
 
