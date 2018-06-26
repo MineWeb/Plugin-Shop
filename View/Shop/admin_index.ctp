@@ -56,40 +56,6 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
-            <h3 class="box-title"><?= $Lang->get('SHOP__ITEMS_AVAILABLE') ?> &nbsp;&nbsp;<a href="<?php if(!empty($search_categories)) { ?><?= $this->Html->url(array('controller' => 'shop', 'action' => 'add_item', 'admin' => true)) ?><?php } ?>" class="btn btn-success<?php if(empty($search_categories)) { echo ' disabled'; } ?>"><?= $Lang->get('GLOBAL__ADD') ?></a></h3>
-          </div>
-          <div class="box-body">
-
-            <table class="table table-bordered dataTable">
-              <thead>
-                <tr>
-                  <th><?= $Lang->get('GLOBAL__NAME') ?></th>
-                  <th><?= $Lang->get('SHOP__ITEM_PRICE') ?></th>
-                  <th><?= $Lang->get('SHOP__CATEGORY') ?></th>
-                  <th class="right"><?= $Lang->get('GLOBAL__ACTIONS') ?></th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php foreach ($search_items as $value => $v) { ?>
-                  <tr>
-                    <td><?= $v["Item"]["name"] ?></td>
-                    <td><?= $v["Item"]["price"] ?> <?= $Configuration->getMoneyName() ?></td>
-                    <td><?= $categories[$v["Item"]["category"]]['name'] ?></td>
-                    <td class="right">
-                      <a href="<?= $this->Html->url(array('controller' => 'shop', 'action' => 'edit/'.$v["Item"]["id"], 'admin' => true)) ?>" class="btn btn-info"><?= $Lang->get('GLOBAL__EDIT') ?></a>
-                      <a onClick="confirmDel('<?= $this->Html->url(array('controller' => 'shop', 'action' => 'delete/item/'.$v["Item"]["id"], 'admin' => true)) ?>')" class="btn btn-danger"><?= $Lang->get('GLOBAL__DELETE') ?></a>
-                    </td>
-                  </tr>
-                <?php } ?>
-              </tbody>
-            </table>
-
-          </div>
-        </div>
-      </div>
-      <div class="col-md-12">
-        <div class="box">
-          <div class="box-header with-border">
             <h3 class="box-title"><?= $Lang->get('SHOP__CATEGORIES') ?> &nbsp;&nbsp;<a href="<?= $this->Html->url(array('controller' => 'shop', 'action' => 'add_category', 'admin' => true)) ?>" class="btn btn-success"><?= $Lang->get('GLOBAL__ADD') ?></a></h3>
           </div>
           <div class="box-body">
@@ -98,26 +64,46 @@
               <thead>
                 <tr>
                   <th><?= $Lang->get('GLOBAL__NAME') ?></th>
+		  <th><?= $Lang->get('SHOP__ITEMS_AVAILABLE') ?></th>
+		  <th><?= $Lang->get('SHOP__ITEM_PRICE') ?></th>
                   <th class="right"><?= $Lang->get('GLOBAL__ACTIONS') ?></th>
                 </tr>
               </thead>
-              <tbody>
-                <?php foreach ($search_categories as $value => $v) { ?>
+              <tbody id="sortable">
+                <?php foreach ($search_categories as $value => $v) {?>
                   <tr>
                     <td>
                       <form action="<?= $this->Html->url(array('controller' => 'shop', 'action' => 'edit_categories')) ?>" method="post" data-ajax="true">
                         <input class="form-control transparent-input" name="name" type="text" value="<?=  $v["Category"]["name"] ?>">
                         <input type="hidden" name="id" value="<?= $v["Category"]["id"] ?>">
                     </td>
+		    <td></td>
+		    <td></td>
                     <td class="right">
                       <button class="btn btn-primary" type="submit"><?= $Lang->get('GLOBAL__SUBMIT') ?></button>
                       <a onClick="confirmDel('<?= $this->Html->url(array('controller' => 'shop', 'action' => 'delete/category/'.$v["Category"]["id"], 'admin' => true)) ?>')" class="btn btn-danger"><?= $Lang->get('GLOBAL__DELETE') ?></a>
                     </form></td>
+					
                   </tr>
+		  <?php $i=0; foreach ($search_items as $val => $va) { $i++; 
+			if ($categories[$va["Item"]["category"]]['name'] == $v["Category"]["name"]) {
+		  ?>
+			  <tr style="cursor:move;" id="<?= $va["Item"]["name"] ?>-<?= $i ?>">
+				<td></td>
+				<td><?= $va["Item"]["name"] ?></td>
+				<td><?= $va["Item"]["price"] ?> <?= $Configuration->getMoneyName() ?></td>
+				<td class="right">
+				  <a href="<?= $this->Html->url(array('controller' => 'shop', 'action' => 'edit/'.$va["Item"]["id"], 'admin' => true)) ?>" class="btn btn-info"><?= $Lang->get('GLOBAL__EDIT') ?></a>
+				  <a onClick="confirmDel('<?= $this->Html->url(array('controller' => 'shop', 'action' => 'delete/item/'.$va["Item"]["id"], 'admin' => true)) ?>')" class="btn btn-danger"><?= $Lang->get('GLOBAL__DELETE') ?></a>
+				</td>
+			  </tr>
+		  <?php }} ?>
                 <?php } ?>
               </tbody>
             </table>
-
+		<br>
+		  <div class="ajax-msg"></div>
+		  <button id="save" class="btn btn-success pull-right active" disabled="disabled"><?= $Lang->get('SHOP__SAVE_SUCCESS') ?></button>
           </div>
         </div>
       </div>
@@ -167,5 +153,30 @@ $(document).ready(function() {
         {mData:"ItemsBuyHistory.created"}
     ],
   });
+});
+</script>
+<script>
+$(function() {
+  $( "#sortable" ).sortable({
+    axis: 'y',
+    stop: function (event, ui) {
+        $('#save').empty().html('<?= $Lang->get('SHOP__SAVE_IN_PROGRESS') ?>');
+        var inputs = {};
+        var shop_item_order = $(this).sortable('serialize');
+        inputs['shop_item_order'] = shop_item_order;
+        $('#shop_item_order').text(shop_item_order);
+        inputs['data[_Token][key]'] = '<?= $csrfToken ?>';
+        $.post("<?= $this->Html->url(array('controller' => 'shop', 'action' => 'save_ajax', 'admin' => true)) ?>", inputs, function(data) {
+          if(data.statut) {
+                $('#save').empty().html('<?= $Lang->get('SHOP__SAVE_SUCCESS') ?>');
+              } else if(!data.statut) {
+                $('.ajax-msg').empty().html('<div class="alert alert-danger" style="margin-top:10px;margin-right:10px;margin-left:10px;"><a class="close" data-dismiss="alert">×</a><i class="icon icon-warning-sign"></i> <b><?= $Lang->get('GLOBAL__ERROR') ?> :</b> '+data2[0]+'</i></div>').fadeIn(500);
+            } else {
+            $('.ajax-msg').empty().html('<div class="alert alert-danger" style="margin-top:10px;margin-right:10px;margin-left:10px;"><a class="close" data-dismiss="alert">×</a><i class="icon icon-warning-sign"></i> <b><?= $Lang->get('GLOBAL__ERROR') ?> :</b> <?= $Lang->get('ERROR__INTERNAL_ERROR') ?></i></div>');
+          }
+        });
+      }
+  });
+  //$( "#sortable" ).disableSelection();
 });
 </script>

@@ -21,6 +21,7 @@ class ShopController extends ShopAppController
         $this->loadModel('Shop.Item'); // le model des articles
         $this->loadModel('Shop.Category'); // le model des catégories
         $search_items = $this->Item->find('all', array(
+			'order' => 'order',
             'conditions' => array(
                 'OR' => array(
                     'display IS NULL',
@@ -522,7 +523,7 @@ class ShopController extends ShopAppController
             $this->layout = 'admin';
 
             $this->loadModel('Shop.Item');
-            $search_items = $this->Item->find('all');
+            $search_items = $this->Item->find('all', array('order' => 'order'));
             $items = array();
             foreach ($search_items as $key => $value) {
                 $items[$value['Item']['id']] = $value['Item']['name'];
@@ -577,6 +578,55 @@ class ShopController extends ShopAppController
     /*
     * ======== Page principale du panel admin ===========
     */
+	public function admin_save_ajax()
+    {
+        $this->autoRender = false;
+        if ($this->isConnected AND $this->Permissions->can('MANAGE_NAV')) {
+
+            if ($this->request->is('post')) {
+                if (!empty($this->request->data)) {
+                    $data = $this->request->data['shop_item_order'];
+                    $data = explode('&', $data);
+                    $i = 1;
+                    foreach ($data as $key => $value) {
+                        $data2[] = explode('=', $value);
+                        $data3 = substr($data2[0][0], 0, -2);
+                        $data1[$data3] = $i;
+                        unset($data3);
+                        unset($data2);
+                        $i++;
+                    }
+                    $data = $data1;
+                    $this->loadModel('Shop.Item');
+                    foreach ($data as $key => $value) {
+                        $find = $this->Item->find('first', array('conditions' => array('name' => $key)));
+                        if (!empty($find)) {
+                            $id = $find['Item']['id'];
+                            $this->Item->read(null, $id);
+                            $this->Item->set(array(
+                                'order' => $value,
+                            ));
+                            $this->Item->save();
+                        } else {
+                            $error = 1;
+                        }
+                    }
+                    if (empty($error)) {
+						return $this->sendJSON(['statut' => true, 'msg' => $this->Lang->get('SHOP__SAVE_SUCCESS')]);
+					} else{
+                        return $this->sendJSON(['statut' => false, 'msg' => $this->Lang->get('ERROR__FILL_ALL_FIELDS')]);
+                    }
+                } else {
+					return $this->sendJSON(['statut' => false, 'msg' => $this->Lang->get('ERROR__FILL_ALL_FIELDS')]);
+                }
+            } else {
+				return $this->sendJSON(['statut' => false, 'msg' => $this->Lang->get('ERROR__BAD_REQUEST')]);
+
+            }
+        } else {
+            $this->redirect('/');
+        }
+    }
     public function admin_config_items()
     {
         $this->autoRender = false;

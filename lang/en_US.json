@@ -3,6 +3,8 @@
 		"SHOP__GLOBAL_AMOUNT": "Amount",
 
 		"SHOP__CONFIG": "Configuration",
+	  	"SHOP__SAVE_SUCCESS": "Saved!",
+  		"SHOP__SAVE_IN_PROGRESS": "Automatic backup ...",
 		"SHOP__CONFIG_GOAL_TITLE": "Goal of the month",
 		"SHOP__CONFIG_GOAL_DESC": "Leave empty to remove",
 		"SHOP__CONFIG_SORT_BY_SERVER": "Sort articles and categories by server",
