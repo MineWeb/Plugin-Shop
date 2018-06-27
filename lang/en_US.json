@@ -19,6 +19,9 @@
 		"SHOP__ADMIN_MANAGE_ITEMS": "Manage articles",
 		"SHOP__ADMIN_MANAGE_VOUCHERS": "Manage Promotions",
 		"SHOP__ADMIN_MANAGE_PAYMENT": "Manage Payments",
+	        "SHOP__DON_TITLE": "Give points to your users",
+                "SHOP__DON_DESC": "Points to give",
+		"SHOP__DON_SUCCESS": "Points given with success",
 
 		"SHOP__PAYPAL_RETURN_MSG": "Return to {WEBSITE_NAME} to collect points",
 

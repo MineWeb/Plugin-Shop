@@ -121,6 +121,31 @@
           </div>
         </div>
       </div>
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header with-border">
+				<h3 class="box-title"><?= $Lang->get('SHOP__DON_TITLE') ?></h3>
+			</div>
+			<div class="box-body">
+				<div class="form-group">
+					<form action="<?= $this->Html->url(array('controller' => 'shop', 'action' => 'give')) ?>" method="post" data-ajax="true">
+						<label><?= $Lang->get('USER__LIST') ?></label>
+						<select class="form-control" name="give" multiple>
+							<?php
+							foreach ($users as $u) {
+								echo '<option value="'.$u['User']['id'].'"';
+								echo '>'.$u['User']['pseudo'].'</option>';
+							}
+							?>
+						</select>
+						<label><?= $Lang->get('SHOP__DON_DESC') ?></label>
+						<input class="form-control transparent-input" name="number" type="text">
+						<button class="btn btn-primary" type="submit"><?= $Lang->get('GLOBAL__SUBMIT') ?></button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
     </div>
     <div class="row">
       <div class="col-md-12">

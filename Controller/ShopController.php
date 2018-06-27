@@ -527,7 +527,10 @@ class ShopController extends ShopAppController
             foreach ($search_items as $key => $value) {
                 $items[$value['Item']['id']] = $value['Item']['name'];
             }
-
+	    $this->loadModel('User');
+	    $users = $this->User->find('all', array(
+		'order' => 'pseudo'
+                ));
             $this->loadModel('Shop.Category');
             $search_categories = $this->Category->find('all');
             foreach ($search_categories as $v) {
@@ -834,6 +837,41 @@ class ShopController extends ShopAppController
         } else {
             throw new ForbiddenException();
         }
+    }
+    public function admin_give()
+    {
+        $this->autoRender = false;
+        $this->response->type('json');
+        if ($this->isConnected AND $this->Permissions->can('SHOP__ADMIN_GIVE')) {
+            if ($this->request->is('post')) {
+                if (!empty($this->request->data['number']) && !empty($this->request->data['give'])) {		
+                $this->loadModel('User');
+		$user_select = $this->request->data['give'];
+		$users = $this->User->find('all');
+		foreach($user_select as $u){
+			foreach($users as $us){
+				if ($us['User']['id'] == $u){
+					$this->User->read(null, $u);
+					$this->User->set(array(
+						'money' => $us['User']['money'] + $this->request->data['number'],
+					));
+				$this->User->save();
+				}
+			}
+		}
+                    $this->response->body(json_encode(array('statut' => true, 'msg' => $this->Lang->get('SHOP__DON_SUCCESS'))));
+                } else {
+                    $this->response->body(json_encode(array('statut' => false, 'msg' => $this->Lang->get('ERROR__FILL_ALL_FIELDS'))));
+                }
+				$this->set(compact('user_select'));
+            } else {
+                $this->response->body(json_encode(array('statut' => false, 'msg' => $this->Lang->get('ERROR__BAD_REQUEST'))));
+            }
+			
+        } else {
+            throw new ForbiddenException();
+        }
+		
     }
 
     /*
