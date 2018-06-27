@@ -863,7 +863,6 @@ class ShopController extends ShopAppController
                 } else {
                     $this->response->body(json_encode(array('statut' => false, 'msg' => $this->Lang->get('ERROR__FILL_ALL_FIELDS'))));
                 }
-				$this->set(compact('user_select'));
             } else {
                 $this->response->body(json_encode(array('statut' => false, 'msg' => $this->Lang->get('ERROR__BAD_REQUEST'))));
             }
