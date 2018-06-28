@@ -541,7 +541,7 @@ class ShopController extends ShopAppController
             $findConfig = $this->ItemsConfig->find('first');
             $config = (!empty($findConfig)) ? $findConfig['ItemsConfig'] : array();
 
-            $this->set(compact('categories', 'search_categories', 'search_items', 'config', 'items'));
+            $this->set(compact('categories', 'search_categories', 'search_items', 'config', 'items', 'users'));
 
         } else {
             $this->redirect('/');
