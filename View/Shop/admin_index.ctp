@@ -167,6 +167,7 @@ $(function() {
         $('#shop_item_order').text(shop_item_order);
         inputs['data[_Token][key]'] = '<?= $csrfToken ?>';
         $.post("<?= $this->Html->url(array('controller' => 'shop', 'action' => 'save_ajax', 'admin' => true)) ?>", inputs, function(data) {
+	data2 = data.split("|");
           if(data.statut) {
                 $('#save').empty().html('<?= $Lang->get('SHOP__SAVE_SUCCESS') ?>');
               } else if(!data.statut) {
