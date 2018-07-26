@@ -105,7 +105,7 @@
                 <?php foreach ($search_categories as $value => $v) { ?>
                   <tr>
                     <td>
-                      <form action="<?= $this->Html->url(array('controller' => 'shop', 'action' => 'edit_categories')) ?>" method="post" data-ajax="true">
+                      <form action="<?= $this->Html->url(array('controller' => 'shop', 'action' => 'edit_category')) ?>" method="post" data-ajax="true">
                         <input class="form-control transparent-input" name="name" type="text" value="<?=  $v["Category"]["name"] ?>">
                         <input type="hidden" name="id" value="<?= $v["Category"]["id"] ?>">
                     </td>
