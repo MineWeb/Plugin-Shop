@@ -160,6 +160,8 @@ class DiscountVoucherComponent extends Object
 
     private function canUse($voucher)
     {
+        if (time() < strtotime($voucher['start_date']))
+            return false;
         if (empty($voucher['limit']))
             return true;
         $userId = $this->controller->User->getKey('id');
