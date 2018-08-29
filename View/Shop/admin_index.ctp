@@ -67,45 +67,43 @@
               <thead>
                 <tr>
                   <th><?= $Lang->get('GLOBAL__NAME') ?></th>
-		  <th><?= $Lang->get('SHOP__ITEMS_AVAILABLE') ?></th>
-		  <th><?= $Lang->get('SHOP__ITEM_PRICE') ?></th>
+                  <th><?= $Lang->get('SHOP__ITEMS_AVAILABLE') ?></th>
+                  <th><?= $Lang->get('SHOP__ITEM_PRICE') ?></th>
                   <th class="right"><?= $Lang->get('GLOBAL__ACTIONS') ?></th>
                 </tr>
               </thead>
+              <tbody id="sortable">
                 <?php foreach ($search_categories as $value => $v) {?>
-		<thead>
-                  <tr>
+                  <tr class="item fixed">
                     <th>
                       <form action="<?= $this->Html->url(array('controller' => 'shop', 'action' => 'edit_category')) ?>" method="post" data-ajax="true">
                         <input class="form-control transparent-input" name="name" type="text" value="<?=  $v["Category"]["name"] ?>">
                         <input type="hidden" name="id" value="<?= $v["Category"]["id"] ?>">
                     </th>
-		    <th></th>
-		    <th></th>
+                    <th></th>
+                    <th></th>
                     <th class="right">
                       <button class="btn btn-primary" type="submit"><?= $Lang->get('GLOBAL__SUBMIT') ?></button>
                       <a onClick="confirmDel('<?= $this->Html->url(array('controller' => 'shop', 'action' => 'delete/category/'.$v["Category"]["id"], 'admin' => true)) ?>')" class="btn btn-danger"><?= $Lang->get('GLOBAL__DELETE') ?></a>
                     </form></th>		
                   </tr>
-		</thead>
-              <tbody id="sortable">
-		  <?php $i=0; foreach ($search_items as $val => $va) { $i++; 
-			if ($categories[$va["Item"]["category"]]['name'] == $v["Category"]["name"]) {
-		  ?>
-			  <tr style="cursor:move;" id="<?= $va["Item"]["name"] ?>-<?= $i ?>">
-				<td></td>
-				<td><?= $va["Item"]["name"] ?></td>
-				<td><?= $va["Item"]["price"] ?> <?= $Configuration->getMoneyName() ?></td>
-				<td class="right">
-				  <a href="<?= $this->Html->url(array('controller' => 'shop', 'action' => 'edit/'.$va["Item"]["id"], 'admin' => true)) ?>" class="btn btn-info"><?= $Lang->get('GLOBAL__EDIT') ?></a>
-				  <a onClick="confirmDel('<?= $this->Html->url(array('controller' => 'shop', 'action' => 'delete/item/'.$va["Item"]["id"], 'admin' => true)) ?>')" class="btn btn-danger"><?= $Lang->get('GLOBAL__DELETE') ?></a>
-				</td>
-			  </tr>
-		  <?php }} ?>
+                  <?php $i=0; foreach ($search_items as $val => $va) { $i++; 
+                    if ($categories[$va["Item"]["category"]]['name'] == $v["Category"]["name"]) {
+                  ?>
+                      <tr class="item" style="cursor:move;" id="<?= $va["Item"]["name"] ?>-<?= $i ?>">
+                        <td></td>
+                        <td><?= $va["Item"]["name"] ?></td>
+                        <td><?= $va["Item"]["price"] ?> <?= $Configuration->getMoneyName() ?></td>
+                        <td class="right">
+                          <a href="<?= $this->Html->url(array('controller' => 'shop', 'action' => 'edit/'.$va["Item"]["id"], 'admin' => true)) ?>" class="btn btn-info"><?= $Lang->get('GLOBAL__EDIT') ?></a>
+                          <a onClick="confirmDel('<?= $this->Html->url(array('controller' => 'shop', 'action' => 'delete/item/'.$va["Item"]["id"], 'admin' => true)) ?>')" class="btn btn-danger"><?= $Lang->get('GLOBAL__DELETE') ?></a>
+                        </td>
+                      </tr>
+                  <?php }} ?>
                 <?php } ?>
               </tbody>
             </table>
-		<br>
+            <br>
 		  <div class="ajax-msg"></div>
 		  <button id="save" class="btn btn-success pull-right active" disabled="disabled"><?= $Lang->get('SHOP__SAVE_SUCCESS') ?></button>
           </div>
@@ -163,6 +161,7 @@ $(document).ready(function() {
 $(function() {
   $( "#sortable" ).sortable({
     axis: 'y',
+    items: '.item:not(.fixed)',
     stop: function (event, ui) {
         $('#save').empty().html('<?= $Lang->get('SHOP__SAVE_IN_PROGRESS') ?>');
         var inputs = {};
@@ -181,6 +180,5 @@ $(function() {
         });
       }
   });
-  //$( "#sortable" ).disableSelection();
 });
 </script>
