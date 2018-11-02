@@ -108,6 +108,10 @@
 		"SHOP__USER_POINTS_TRANSFER_SUCCESS": "The money has been sent!",
 		"SHOP__TRANSFER_ENABLE_SUCCESS": "You have activated the transfer of points!",
 		"SHOP__TRANSFER_DISABLE_SUCCESS": "You have deactivated the transfer of points!",
+	
+		"SHOP__GIFTALL": "Make a gift to everyone",
+  		"SHOP__GIFTALL_VALUE": "Number of shop point(s) to be given to all users of the site",
+  		"SHOP__GIFTALL_SUCCESS": "Your gift has been made",
 
 		"SHOP__ITEM": "Article",
 		"SHOP__ITEMS": "Articles",
