@@ -3,7 +3,7 @@ class GiftallController extends ShopAppController
 {
 	public function admin_index()
 	{
-		if ($this->isConnected AND $this->Permissions->can('SHOP__ADMIN_MANAGE_ITEMS')) {
+		if ($this->isConnected AND $this->Permissions->can('SHOP__ADMIN_GIFTALL')) {
 			
 			if($this->request->is('post')){
 				$this->layout = null;
@@ -27,6 +27,8 @@ class GiftallController extends ShopAppController
 				$this->set('title_for_layout', $this->Lang->get('SHOP__TITLE'));
 				$this->layout = 'admin';
 			}
+		}else{
+			throw new ForbiddenException();
 		}
 	}
 }

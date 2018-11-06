@@ -35,7 +35,7 @@
 	"version":"1.2.12",
 	"useEvents":true,
 	"permissions" : {
-		"available" : ["CREDIT_ACCOUNT", "CAN_BUY", "SHOP__ADMIN_MANAGE_ITEMS", "SHOP__ADMIN_MANAGE_VOUCHERS", "SHOP__ADMIN_MANAGE_PAYMENT"],
+		"available" : ["CREDIT_ACCOUNT", "CAN_BUY", "SHOP__ADMIN_MANAGE_ITEMS", "SHOP__ADMIN_MANAGE_VOUCHERS", "SHOP__ADMIN_MANAGE_PAYMENT", "SHOP__ADMIN_GIFTALL"],
 		"default" : {
 			"0" : ["CREDIT_ACCOUNT", "CAN_BUY"],
 			"2" : ["CREDIT_ACCOUNT", "CAN_BUY"]
