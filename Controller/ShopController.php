@@ -166,7 +166,7 @@ class ShopController extends ShopAppController
                 }
 
                 if ($reductional_items) {
-                    $item_price = $item_price - $reduction;
+                    $item_price = floor($item_price - $reduction);
 
                     $reduction = $reduction . ' ' . $this->Configuration->getMoneyName();
                     $reductional_items_list = '<i>' . implode('</i>, <i>', $reductional_items_list_display) . '</i>';
