@@ -158,7 +158,6 @@
   "SHOP__ITEM_WAIT_TIME":"Intervalle de temps nécessaire entre chaque achats",
   "SHOP__ITEM_CANT_BUY_WAIT_TIME":"Vous ne pouvez pas acheter l'article <i>{ITEM_NAME}</i> maintenant ! Chaque achat doivent être espacé de {WAIT_TIME}.",
   "SHOP__ITEMS_AVAILABLE_OTHER":"Articles non répertoriés",
-
   "SHOP__CATEGORIES": "Cat\u00e9gories",
   "SHOP__CATEGORY": "Cat\u00e9gorie",
   "SHOP__CATEGORY_ADD": "Ajouter une cat\u00e9gorie",
@@ -198,7 +197,7 @@
   "SHOP__NANO_OFFERS": "Offres Nano",
   "SHOP__NANO_OFFER":"Offre",
   "SHOP__NANO_HISTORIES":"Historique des transactions Nano",
-  "SHOP__NANO_MAIL":"adresse (nano_...)",
+  "SHOP__NANO_ADDRESS":"adresse (nano_...)",
   "SHOP__NANO_OFFER_ADD": "Ajouter une offre Nano",
   "SHOP__NANO_OFFER_ADD_SUCCESS": "Offre Nano ajout\u00e9e avec succ\u00e8s !",
   "SHOP__NANO_OFFER_EDIT": "Modifier une offre Nano",

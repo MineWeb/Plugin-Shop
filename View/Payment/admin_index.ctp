@@ -41,9 +41,9 @@ table tr td:last-child > div.btn-group {
                   <thead>
                     <tr>
                       <th><?= $Lang->get('GLOBAL__NAME') ?></th>
-                      <th><?= $Lang->get('SHOP__NANO_MAIL') ?></th>
+                      <th><?= $Lang->get('SHOP__NANO_ADDRESS') ?></th>
                       <th><?= $Lang->get('SHOP__ITEM_PRICE') ?></th>
-                      <th><?= "currency"//$Lang->get('SHOP__ITEM_PRICE') ?></th>
+                      <th><?= $Lang->get('SHOP__ITEM_CURRENCY') ?></th>
                       <th><?= ucfirst($Configuration->getMoneyName()) ?></th>
                       <th><?= $Lang->get('GLOBAL__CREATED') ?></th>
                       <th><?= $Lang->get('GLOBAL__ACTIONS') ?></th>

@@ -2,7 +2,7 @@
 <?= $this->Html->css('Shop.jquery.bootstrap-touchspin.css') ?>
 <div class="container plugin-shop">
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-xs-12 col-md-3">
       <p class="lead"><?= ($isConnected) ? $money: $Lang->get('SHOP__TITLE'); ?></p>
         <div class="list-group">
             <?php
@@ -30,7 +30,7 @@
           <a href="#" data-toggle="modal" data-target="#cart-modal" class="btn btn-primary btn-block pull-right"><?= $Lang->get('SHOP__BUY_CART') ?></a>
         <?php } ?>
       </div>
-      <div class="col-md-9">
+      <div class="col-xs-12 col-md-9">
         <div class="row">
           <?= $vouchers->get_vouchers() // Les promotions en cours ?>
         </div>
