@@ -121,6 +121,7 @@
   "SHOP__ITEM_NAME":"Nom",
   "SHOP__ITEM_IMG_URL": "URL de l'image",
   "SHOP__ITEM_PRICE": "Prix",
+  "SHOP__ITEM_CURRENCY": "Monnaie",
   "SHOP__ITEM_QUANTITY":"Quantité",
   "SHOP__ITEM_TOTAL":"Total",
   "SHOP__ITEM_DESCRIPTION": "Description",
@@ -240,6 +241,7 @@
   "NOTIFICATION__NEW_VOUCHER":"Un nouveau code promotionnel est disponible !",
   "NOTIFICATION__NEW_PSC":"Une nouvelle PaySafeCard doit être validée !",
   "NOTIFICATION__PAYPAL_IPN_VALIDED":"Votre paiement PayPal vient d'être confirmé !",
+  "NOTIFICATION__NANO_VALIDED":"Votre paiement Nano vient d'être confirmé !",
 
   "HISTORY__CATEGORY_SHOP": "Boutique",
   "HISTORY__CATEGORY_CREDIT_SHOP": "Cr\u00e9ditation boutique",

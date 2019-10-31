@@ -130,6 +130,7 @@ class ShopAppSchema extends CakeSchema {
 		'address' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 65, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 50, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'price' => array('type' => 'string', 'null' => false, 'length' => 20, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
+		'currency' => array('type' => 'string', 'eur' => false, 'length' => 3, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'money' => array('type' => 'string', 'null' => false, 'length' => 20, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'indexes' => array(
@@ -140,7 +141,7 @@ class ShopAppSchema extends CakeSchema {
 
 	public $shop__nano_histories = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => true, 'key' => 'primary'),
-		'block_hash' => array('type' => 'string', 'null' => false, 'length' => 64, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
+		'token' => array('type' => 'string', 'null' => false, 'length' => 255, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
 		'offer_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
 		'payment_amount' => array('type' => 'string', 'null' => false, 'length' => 20, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),

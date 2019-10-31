@@ -121,6 +121,7 @@
 		"SHOP__ITEM_NAME": "Name",
 		"SHOP__ITEM_IMG_URL": "URL of the image",
 		"SHOP__ITEM_PRICE": "Price",
+		"SHOP__ITEM_CURRNCY": "Currency",
 		"SHOP__ITEM_QUANTITY": "Quantity",
 		"SHOP__ITEM_TOTAL": "Total",
 		"SHOP__ITEM_DESCRIPTION": "Description",
@@ -239,6 +240,7 @@
 		"NOTIFICATION__NEW_VOUCHER": "A new promotional code is available!",
 		"NOTIFICATION__NEW_PSC": "A new PaySafeCard must be validated!",
 		"NOTIFICATION__PAYPAL_IPN_VALIDED": "Your PayPal payment has been confirmed!",
+		"NOTIFICATION__NANO_VALIDED": "Your Nano payment has been confirmed!",
 
 		"HISTORY__CATEGORY_SHOP": "Shop",
 		"HISTORY__CATEGORY_CREDIT_SHOP": "Shop Creditation",

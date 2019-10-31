@@ -6,7 +6,7 @@ class PaymentController extends ShopAppController
     public function beforeFilter()
     {
         parent::beforeFilter();
-        $this->Security->unlockedActions = array('starpass', 'starpass_verif', 'ipn', 'dedipass_ipn');
+        $this->Security->unlockedActions = array('starpass', 'starpass_verif', 'ipn', 'dedipass_ipn', 'verif_brainblocks');
     }
 
     /*
@@ -164,7 +164,7 @@ class PaymentController extends ShopAppController
             $this->modelClass = 'NanoHistory';
             $this->DataTable->initialize($this);
             $this->paginate = array(
-                'fields' => array('NanoHistory.block_hash', 'User.pseudo', 'Nano.name', 'NanoHistory.payment_amount', 'NanoHistory.credits_gived', 'NanoHistory.created'),
+                'fields' => array('NanoHistory.token', 'User.pseudo', 'Nano.name', 'NanoHistory.payment_amount', 'NanoHistory.credits_gived', 'NanoHistory.created'),
                 'recursive' => 1
             );
             $this->DataTable->mDataProp = true;
@@ -1212,6 +1212,133 @@ class PaymentController extends ShopAppController
             throw new InternalErrorException('PayPal : Not post');
         }
     }
+
+    /*
+      * ======== Vérification d'une transaction PayPal ===========
+      */
+
+      public function verif_brainblocks()
+      { // cf. https://developer.paypal.com/docs/classic/ipn/gs_IPN/
+          $this->autoRender = false;
+  
+          if ($this->request->is('post')) { //On vérifie l'état de la requête
+  
+              // On assigne les variables
+              $token = $this->request->data['token'];
+              $user_id = $this->request->data['user_id'];
+              $nano_id = $this->request->data['nano_id'];
+              // On vérifie que l'utilisateur contenu dans le champ custom existe bien
+  
+              $this->loadModel('User');
+              if (!$this->User->exist($user_id)) {
+                  throw new InternalErrorException('Nano : Unknown user');
+              }
+  
+              // On prépare la requête de vérification
+              // On fais la requête
+  
+              $cURL = curl_init();
+              curl_setopt($cURL, CURLOPT_SSL_VERIFYPEER, false);
+              curl_setopt($cURL, CURLOPT_SSL_VERIFYHOST, false);
+              curl_setopt($cURL, CURLOPT_URL, "https://api.brainblocks.io/api/session/$token/verify");
+              curl_setopt($cURL, CURLOPT_ENCODING, 'gzip');
+              curl_setopt($cURL, CURLOPT_BINARYTRANSFER, true);
+              curl_setopt($cURL, CURLOPT_HEADER, false);
+              curl_setopt($cURL, CURLOPT_RETURNTRANSFER, true);
+              curl_setopt($cURL, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+              curl_setopt($cURL, CURLOPT_FORBID_REUSE, true);
+              curl_setopt($cURL, CURLOPT_FRESH_CONNECT, true);
+              curl_setopt($cURL, CURLOPT_CONNECTTIMEOUT, 30);
+              curl_setopt($cURL, CURLOPT_TIMEOUT, 60);
+              curl_setopt($cURL, CURLINFO_HEADER_OUT, true);
+              curl_setopt($cURL, CURLOPT_HTTPHEADER, array(
+                  'Connection: close',
+                  'Expect: ',
+              ));
+              $Response = curl_exec($cURL);
+              $Status = (int)curl_getinfo($cURL, CURLINFO_HTTP_CODE);
+              curl_close($cURL);
+  
+              // On traite la réponse
+              
+              // On vérifie que il y ai pas eu d'erreur
+  
+              if (empty($Response) || $Status != 200 || !$Status) {
+                  throw new InternalErrorException('Nano : Error with BrainBlocks Response');
+              }
+              $result = json_decode($Response, true);
+  
+              // On effectue les autres vérifications
+
+                      // On cherche l'offre avec ce montant là
+                      $this->loadModel('Shop.Nano');
+                      $findOffer = $this->Nano->find('first', array('conditions' => array('id' => $nano_id)));
+                      if (!empty($findOffer)) {
+  
+                          // On vérifie que ce soit le bon mail
+                          if ($result['destination'] == $findOffer['Nano']['address'] 
+                              && $result['currency'] == $findOffer['Nano']['currency'] && $result['amount'] == $findOffer['Nano']['price']
+                              && $result['fulfilled'] == true) {
+  
+                              // On vérifie que le paiement pas déjà en base de données
+                              $this->loadModel('Shop.NanoHistory');
+                              $findPayment = $this->NanoHistory->find('first', array('conditions' => array('token' => $token)));
+  
+                              if (empty($findPayment)) {
+  
+                                  // On récupére le solde de l'utilisateur et on ajoute ses nouveaux crédits
+                                  $sold = $this->User->getFromUser('money', $user_id);
+                                  $new_sold = floatval($sold + floatval($findOffer['Nano']['money']));
+  
+                                  // On ajoute l'argent à l'utilisateur
+                                  $this->User->setToUser('money', $new_sold, $user_id);
+  
+                                  // On l'ajoute dans l'historique global
+                                  $this->HistoryC = $this->Components->load('History');
+                                  $this->HistoryC->set('BUY_MONEY', 'shop', null, $user_id);
+  
+                                  // On l'ajoute dans l'historique des paiements
+                                  $this->NanoHistory->create();
+                                  $this->NanoHistory->set(array(
+                                      'token' => $token,
+                                      'user_id' => $user_id,
+                                      'offer_id' => $findOffer['Nano']['id'],
+                                      'payment_amount' => $findOffer['Nano']['price'],
+                                      'credits_gived' => $findOffer['Nano']['money']
+                                  ));
+                                  $this->PaypalHistory->save();
+  
+                                  $event = new CakeEvent('onBuyPoints', $this, array('credits' => $findOffer['Nano']['money'], 'price' => $findOffer['Nano']['price'], 'plateform' => 'nano', 'user_id' => $user_id));
+                                  $this->getEventManager()->dispatch($event);
+                                  if ($event->isStopped()) {
+                                      return $event->result;
+                                  }
+  
+                                  $this->loadModel('Notification');
+                                  $this->Notification->setToUser($this->Lang->get('NOTIFICATION__NANO_VALIDED'), $user_id);
+  
+                                  $this->response->statusCode(200);
+  
+                              } else {
+                                  throw new InternalErrorException('Nano : Payment already credited');
+                              }
+  
+                          } else {
+                              throw new InternalErrorException('Nano : invalid address');
+                          }
+  
+                      } else {
+                          throw new InternalErrorException('Nano : Unknown offer');
+                      }
+  
+                  
+  
+              
+  
+          } else {
+              throw new InternalErrorException('PayPal : Not post');
+          }
+      }
 
 
     /*

@@ -43,6 +43,7 @@ table tr td:last-child > div.btn-group {
                       <th><?= $Lang->get('GLOBAL__NAME') ?></th>
                       <th><?= $Lang->get('SHOP__NANO_MAIL') ?></th>
                       <th><?= $Lang->get('SHOP__ITEM_PRICE') ?></th>
+                      <th><?= "currency"//$Lang->get('SHOP__ITEM_PRICE') ?></th>
                       <th><?= ucfirst($Configuration->getMoneyName()) ?></th>
                       <th><?= $Lang->get('GLOBAL__CREATED') ?></th>
                       <th><?= $Lang->get('GLOBAL__ACTIONS') ?></th>
@@ -55,6 +56,7 @@ table tr td:last-child > div.btn-group {
                           <td><?= $value['Nano']['name'] ?></td>
                           <td><?= $value['Nano']['address'] ?></td>
                           <td><?= $value['Nano']['price'] ?></td>
+                          <td><?= $value['Nano']['currency'] ?></td>
                           <td><?= $value['Nano']['money'] ?></td>
                           <td><?= $Lang->date($value['Nano']['created']) ?></td>
                           <td>

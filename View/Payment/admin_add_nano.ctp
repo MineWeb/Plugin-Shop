@@ -26,6 +26,17 @@
             </div>
 
             <div class="form-group">
+              <label><?= $Lang->get('SHOP__ITEM_CURRENCY') ?></label>
+              <select name="currency" class="form-control">
+              <?php
+                  $currencies = [ "aed", "afn", "all", "amd", "ang", "aoa", "ars", "aud", "awg", "azn", "bam", "bbd", "bch", "bdt", "bgn", "bhd", "bif", "bmd", "bnd", "bob", "brl", "bsd", "btc", "btn", "bwp", "bzd", "cad", "cdf", "chf", "clf", "clp", "cny", "cop", "crc", "cup", "cve", "czk", "djf", "dkk", "dop", "dzd", "egp", "etb", "eur", "fjd", "fkp", "gbp", "gel", "ghs", "gip", "gmd", "gnf", "gtq", "gyd", "hkd", "hnl", "hrk", "htg", "huf", "idr", "ils", "inr", "iqd", "irr", "isk", "jep", "jmd", "jod", "jpy", "kes", "kgs", "khr", "kmf", "kpw", "krw", "kwd", "kyd", "kzt", "lak", "lbp", "lkr", "lrd", "lsl", "lyd", "mad", "mdl", "mga", "mkd", "mmk", "mnt", "mop", "mru", "mur", "mvr", "mwk", "mxn", "myr", "mzn", "nad", "ngn", "nio", "nok", "npr", "nzd", "omr", "pab", "pen", "pgk", "php", "pkr", "pln", "pyg", "qar", "rai", "ron", "rsd", "rub", "rwf", "sar", "sbd", "scr", "sdg", "sek", "sgd", "shp", "sll", "sos", "srd", "stn", "svc", "syp", "szl", "thb", "tjs", "tmt", "tnd", "top", "try", "ttd", "twd", "tzs", "uah", "ugx", "usd", "uyu", "uzs", "vef", "vnd", "vuv", "wst", "xaf", "xag", "xau", "xcd", "xof", "xpf", "yer", "zar", "zmw", "zwl" ];
+                  foreach ($currencies as $value) { ?>
+                    <option value="<?=$value?>"><?=$value?></option>
+                  <?php } ?>
+              </select>
+            </div>
+
+            <div class="form-group">
               <label><?= $Lang->get('SHOP__OFFER_MONEY_TO_ADD', array('{MONEY_NAME}' => $Configuration->getMoneyName())) ?></label>
               <input name="money" class="form-control" type="text">
             </div>

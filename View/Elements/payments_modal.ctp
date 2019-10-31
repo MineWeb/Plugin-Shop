@@ -64,6 +64,64 @@
               <br>
             </div>
           <?php } ?>
+          <?php if(!empty($nano_offers)) { ?>
+            <a class="btn btn-info btn-block" data-toggle="collapse" href="#Nano" aria-expanded="false" aria-controls="Nano">Nano</a>
+            <br>
+            <div class="collapse" id="Nano">
+              <form>
+                <script src="https://brainblocks.io/brainblocks.min.js"></script>
+                
+                <script>
+                  function renderBrainblocks(select){
+                    var val = $(select).val()
+                    var amount_address_currency = val.split('|')
+                    brainblocks.Button.render({
+                      payment: {
+                        amount: amount_address_currency[0],
+                        destination: amount_address_currency[1],
+                        currency: amount_address_currency[2],
+                      },
+                      onPayment: function(data) {
+                        var form = new FormData()
+                        form.append('token', data.token)
+                        form.append('user_id','<?= $user['id'] ?>')
+                        form.append('nano_id',amount_address_currency[3])
+                        $.ajax({
+                            url : '<?= $this->Html->url(array('controller' => 'payment', 'action' => 'verif_brainblocks'), true) ?>',
+                            type : 'POST',
+                            data : form,
+                            processData: false,
+                            contentType: false,
+                            dataType : 'json',     
+                            success : function(res){ 
+                                console.log(res);                          
+                            },
+                            error: function(res){
+                                console.log(res);
+                            }
+                        });
+                        <?= ''//$this->Html->url(array('controller' => 'shop', 'action' => 'index', 'return'), true) ?>
+                        <?= ''//$this->Html->url(array('controller' => 'shop', 'action' => 'index', 'error'), true) ?>
+                        
+                      }
+                    }, '#nano-button')
+                  }
+                </script>
+                <div class="form-group">
+                  <select class="form-control" onChange="renderBrainblocks(this)" >
+                    <option disabled selected>Choisissez une offre</option>
+                    <?php foreach ($nano_offers as $key => $value) { ?>
+                      <option value="<?= $value['Nano']['price'] ?>|<?= $value['Nano']['address'] ?>|<?= $value['Nano']['currency'] ?>|<?= $value['Nano']['id'] ?>" ><?= $value['Nano']['name'] ?></option>
+                    <?php } ?>
+                  </select>
+                  <div class="form-group">
+                    <div style="text-align: -webkit-center; margin-top: 2%;" id="nano-button"></div>
+                  </div>
+                </div>
+              </form>
+              <br>
+            </div>
+          <?php } ?>
           <?php if($paysafecard_enabled) { ?>
             <a class="btn btn-info btn-block" data-toggle="collapse" href="#PaySafeCard" aria-expanded="false" aria-controls="PaySafeCard">PaySafeCard</a>
             <br>
