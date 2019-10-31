@@ -18,7 +18,7 @@ table tr td:last-child > div.btn-group {
 
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_nano" data-toggle="tab" aria-expanded="false">Nano <img height="10px;" src="https://raw.githubusercontent.com/Joohansson/nanolinks/master/src/nano.gif" alt="Nano GIF"></a></li>
+              <li class="active"><a href="#tab_nano" data-toggle="tab" aria-expanded="false"><img class="logo" src="https://www.nano.org/assets/img/logo-ea2a79cb5e4d0db90d60eba5a004f77f57bfe9ed0a74eb79fbb3f420da8c7d14.svg" alt="nano" width="100"></a></li>
               <li class=""><a href="#tab_starpass" data-toggle="tab" aria-expanded="true">StarPass</a></li>
               <li class=""><a href="#tab_paypal" data-toggle="tab" aria-expanded="false">PayPal</a></li>
               <li class=""><a href="#tab_psc" data-toggle="tab" aria-expanded="false">PaySafeCard</a></li>
@@ -78,10 +78,10 @@ table tr td:last-child > div.btn-group {
                 <table class="table table-bordered dataTable" id="histories_nano">
                   <thead>
                     <tr>
-                      <th><?= $Lang->get('SHOP__NANO_PAYMENT_ID') ?></th>
                       <th><?= $Lang->get('USER__USERNAME') ?></th>
                       <th><?= $Lang->get('SHOP__NANO_OFFER') ?></th>
                       <th><?= $Lang->get('SHOP__GLOBAL_AMOUNT') ?></th>
+                      <th><?= $Lang->get('SHOP__ITEM_CURRENCY') ?></th>
                       <th><?= ucfirst($Configuration->getMoneyName()) ?></th>
                       <th><?= $Lang->get('GLOBAL__CREATED') ?></th>
                     </tr>
@@ -91,26 +91,26 @@ table tr td:last-child > div.btn-group {
                 </table>
                 <script type="text/javascript">
                 $(document).ready(function() {
-                  // $('#histories_nano').DataTable({
-                  //   "paging": true,
-                  //   "lengthChange": false,
-                  //   "searching": false,
-                  //   "ordering": false,
-                  //   "info": false,
-                  //   "autoWidth": false,
-                  //   'searching': true,
-                  //   "bProcessing": true,
-                  //   "bServerSide": true,
-                  //   "sAjaxSource": "<?= $this->Html->url(array('action' => 'get_nano_histories')) ?>",
-                  //   "aoColumns": [
-                  //       {mData:"NanoHistory.block_hash"},
-                  //       {mData:"User.pseudo"},
-                  //       {mData:"Nano.name"},
-                  //       {mData:"NanoHistory.payment_amount"},
-                  //       {mData:"NanoHistory.credits_gived"},
-                  //       {mData:"NanoHistory.created"}
-                  //   ],
-                  // });
+                  $('#histories_nano').DataTable({
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": false,
+                    "ordering": false,
+                    "info": false,
+                    "autoWidth": false,
+                    'searching': true,
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "sAjaxSource": "<?= $this->Html->url(array('action' => 'get_nano_histories')) ?>",
+                    "aoColumns": [
+                        {mData:"User.pseudo"},
+                        {mData:"Nano.name"},
+                        {mData:"NanoHistory.payment_amount"},
+                        {mData:"NanoHistory.currency"},
+                        {mData:"NanoHistory.credits_gived"},
+                        {mData:"NanoHistory.created"}
+                    ],
+                  });
                 });
                 </script>
 

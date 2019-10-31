@@ -65,7 +65,7 @@
             </div>
           <?php } ?>
           <?php if(!empty($nano_offers)) { ?>
-            <a class="btn btn-info btn-block" data-toggle="collapse" href="#Nano" aria-expanded="false" aria-controls="Nano">Nano</a>
+            <a class="btn btn-info btn-block" data-toggle="collapse" href="#Nano" aria-expanded="false" aria-controls="Nano"><img class="logo" src="https://www.nano.org/assets/img/logo-ea2a79cb5e4d0db90d60eba5a004f77f57bfe9ed0a74eb79fbb3f420da8c7d14.svg" alt="nano" width="100"></a>
             <br>
             <div class="collapse" id="Nano">
               <form>

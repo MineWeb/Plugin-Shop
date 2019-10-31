@@ -153,8 +153,6 @@ class PaymentController extends ShopAppController
     public function admin_get_nano_histories()
     {
         if ($this->isConnected && $this->Permissions->can('SHOP__ADMIN_MANAGE_ITEMS')) {
-            $this->response->body(json_encode([]));
-            exit();
             $this->loadModel('Shop.Nano');
 
             $this->autoRender = false;
@@ -164,7 +162,7 @@ class PaymentController extends ShopAppController
             $this->modelClass = 'NanoHistory';
             $this->DataTable->initialize($this);
             $this->paginate = array(
-                'fields' => array('NanoHistory.token', 'User.pseudo', 'Nano.name', 'NanoHistory.payment_amount', 'NanoHistory.credits_gived', 'NanoHistory.created'),
+                'fields' => array('User.pseudo', 'Nano.name', 'NanoHistory.payment_amount', 'NanoHistory.currency', 'NanoHistory.credits_gived', 'NanoHistory.created'),
                 'recursive' => 1
             );
             $this->DataTable->mDataProp = true;
@@ -794,7 +792,7 @@ class PaymentController extends ShopAppController
                         if (!empty($this->request->data['name']) AND !empty($this->request->data['address']) AND !empty($this->request->data['price']) AND !empty($this->request->data['money'])) {
                             $this->request->data['price'] = number_format($this->request->data['price'], 2, '.', '');
                             $this->request->data['money'] = number_format($this->request->data['money'], 2, '.', '');
-                            if (substr( $this->request->data['address'], 0, 4 ) === "nano") { //TODO : Validate nano_ address
+                            if (preg_match("/nano_[13][13-9a-km-uw-z]{59}/",$this->request->data['address'])) {
                                 $this->loadModel('Shop.Nano');
                                 $this->Nano->read(null, $id);
                                 $this->Nano->set($this->request->data);
@@ -803,7 +801,7 @@ class PaymentController extends ShopAppController
                                 $this->Session->setFlash($this->Lang->get('SHOP__NANO_OFFER_EDIT_SUCCESS'), 'default.success');
                                 echo json_encode(array('statut' => true, 'msg' => $this->Lang->get('SHOP__NANO_OFFER_EDIT_SUCCESS')));
                             } else {
-                                echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('USER__ERROR_EMAIL_NOT_VALID')));
+                                echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('SHOP__ERROR_NANO_ADDRESS_NOT_VALID')));
                             }
                         } else {
                             echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('ERROR__FILL_ALL_FIELDS')));
@@ -1304,6 +1302,7 @@ class PaymentController extends ShopAppController
                                       'user_id' => $user_id,
                                       'offer_id' => $findOffer['Nano']['id'],
                                       'payment_amount' => $findOffer['Nano']['price'],
+                                      'currency' => $findOffer['Nano']['currency'],
                                       'credits_gived' => $findOffer['Nano']['money']
                                   ));
                                   $this->NanoHistory->save();
