@@ -115,7 +115,7 @@ class ShopController extends ShopAppController
         $money = 0;
         if ($this->isConnected) {
             $money = $this->User->getKey('money') . ' ';
-            $money += ($this->User->getKey('money') == 1 OR $this->User->getKey('money') == 0) ? $this->Configuration->getMoneyName(false) : $this->Configuration->getMoneyName();
+            $money .= ($this->User->getKey('money') == 1 OR $this->User->getKey('money') == 0) ? $this->Configuration->getMoneyName(false) : $this->Configuration->getMoneyName();
         }
 
         $vouchers = $this->DiscountVoucher;

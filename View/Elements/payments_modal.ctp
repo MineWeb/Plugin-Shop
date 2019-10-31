@@ -94,14 +94,13 @@
                             contentType: false,
                             dataType : 'json',     
                             success : function(res){ 
-                                console.log(res);                          
+                                if(res.statut)
+                                  window.location.reload()
                             },
                             error: function(res){
                                 console.log(res);
                             }
                         });
-                        <?= ''//$this->Html->url(array('controller' => 'shop', 'action' => 'index', 'return'), true) ?>
-                        <?= ''//$this->Html->url(array('controller' => 'shop', 'action' => 'index', 'error'), true) ?>
                         
                       }
                     }, '#nano-button')

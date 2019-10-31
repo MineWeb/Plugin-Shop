@@ -3,7 +3,7 @@
 <div class="container plugin-shop">
   <div class="row">
     <div class="col-md-3">
-      <p class="lead"><?= ($isConnected) ? $money.' '.$Configuration->getMoneyName() : $Lang->get('SHOP__TITLE'); ?></p>
+      <p class="lead"><?= ($isConnected) ? $money: $Lang->get('SHOP__TITLE'); ?></p>
         <div class="list-group">
             <?php
             $i = 0;
