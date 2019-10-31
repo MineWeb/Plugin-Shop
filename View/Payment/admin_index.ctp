@@ -18,7 +18,8 @@ table tr td:last-child > div.btn-group {
 
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_starpass" data-toggle="tab" aria-expanded="true">StarPass</a></li>
+              <li class="active"><a href="#tab_nano" data-toggle="tab" aria-expanded="false">Nano <img height="10px;" src="https://raw.githubusercontent.com/Joohansson/nanolinks/master/src/nano.gif" alt="Nano GIF"></a></li>
+              <li class=""><a href="#tab_starpass" data-toggle="tab" aria-expanded="true">StarPass</a></li>
               <li class=""><a href="#tab_paypal" data-toggle="tab" aria-expanded="false">PayPal</a></li>
               <li class=""><a href="#tab_psc" data-toggle="tab" aria-expanded="false">PaySafeCard</a></li>
               <li class=""><a href="#tab_dedipass" data-toggle="tab" aria-expanded="false">Dédipass</a></li>
@@ -28,7 +29,92 @@ table tr td:last-child > div.btn-group {
             </ul>
             <div class="tab-content">
               <?= $Module->loadModules('shop_payments_modal_admin_tab_content') ?>
-              <div class="tab-pane active" id="tab_starpass">
+              
+              <div class="tab-pane active" id="tab_nano">
+
+                <h3><?= $Lang->get('SHOP__NANO_OFFERS') ?> <a href="<?= $this->Html->url(array('controller' => 'payment', 'action' => 'add_nano', 'admin' => true)) ?>" class="btn btn-success pull-right"><?= $Lang->get('GLOBAL__ADD') ?></a></h3>
+
+                <br>
+                
+
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th><?= $Lang->get('GLOBAL__NAME') ?></th>
+                      <th><?= $Lang->get('SHOP__NANO_MAIL') ?></th>
+                      <th><?= $Lang->get('SHOP__ITEM_PRICE') ?></th>
+                      <th><?= ucfirst($Configuration->getMoneyName()) ?></th>
+                      <th><?= $Lang->get('GLOBAL__CREATED') ?></th>
+                      <th><?= $Lang->get('GLOBAL__ACTIONS') ?></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if(isset($offers['nano'])) { ?>
+                      <?php foreach ($offers['nano'] as $key => $value) { ?>
+                        <tr>
+                          <td><?= $value['Nano']['name'] ?></td>
+                          <td><?= $value['Nano']['address'] ?></td>
+                          <td><?= $value['Nano']['price'] ?></td>
+                          <td><?= $value['Nano']['money'] ?></td>
+                          <td><?= $Lang->date($value['Nano']['created']) ?></td>
+                          <td>
+                            <div class="btn-group" role="group">
+                              <a href="<?= $this->Html->url(array('controller' => 'payment', 'action' => 'edit_nano/'.$value["Nano"]["id"], 'admin' => true)) ?>" class="btn btn-info"><?= $Lang->get('GLOBAL__EDIT') ?></a>
+                              <a onClick="confirmDel('<?= $this->Html->url(array('controller' => 'shop', 'action' => 'delete/nano/'.$value["Nano"]["id"], 'admin' => true)) ?>')" class="btn btn-danger"><?= $Lang->get('GLOBAL__DELETE') ?></a>
+                            </div>
+                          </td>
+                        </tr>
+                      <?php } ?>
+                    <?php } ?>
+                  </tbody>
+                </table>
+
+                <hr>
+
+                <h3><?= $Lang->get('SHOP__NANO_HISTORIES') ?></h3>
+
+                <table class="table table-bordered dataTable" id="histories_nano">
+                  <thead>
+                    <tr>
+                      <th><?= $Lang->get('SHOP__NANO_PAYMENT_ID') ?></th>
+                      <th><?= $Lang->get('USER__USERNAME') ?></th>
+                      <th><?= $Lang->get('SHOP__NANO_OFFER') ?></th>
+                      <th><?= $Lang->get('SHOP__GLOBAL_AMOUNT') ?></th>
+                      <th><?= ucfirst($Configuration->getMoneyName()) ?></th>
+                      <th><?= $Lang->get('GLOBAL__CREATED') ?></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+                <script type="text/javascript">
+                $(document).ready(function() {
+                  // $('#histories_nano').DataTable({
+                  //   "paging": true,
+                  //   "lengthChange": false,
+                  //   "searching": false,
+                  //   "ordering": false,
+                  //   "info": false,
+                  //   "autoWidth": false,
+                  //   'searching': true,
+                  //   "bProcessing": true,
+                  //   "bServerSide": true,
+                  //   "sAjaxSource": "<?= $this->Html->url(array('action' => 'get_nano_histories')) ?>",
+                  //   "aoColumns": [
+                  //       {mData:"NanoHistory.block_hash"},
+                  //       {mData:"User.pseudo"},
+                  //       {mData:"Nano.name"},
+                  //       {mData:"NanoHistory.payment_amount"},
+                  //       {mData:"NanoHistory.credits_gived"},
+                  //       {mData:"NanoHistory.created"}
+                  //   ],
+                  // });
+                });
+                </script>
+
+              </div>
+              
+              <div class="tab-pane" id="tab_starpass">
 
                 <h3><?= $Lang->get('SHOP__STARPASS_OFFERS') ?> <a href="<?= $this->Html->url(array('controller' => 'payment', 'action' => 'add_starpass', 'admin' => true)) ?>" class="btn btn-success pull-right"><?= $Lang->get('GLOBAL__ADD') ?></a></h3>
 

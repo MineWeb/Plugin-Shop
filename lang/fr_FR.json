@@ -194,6 +194,17 @@
   "SHOP__PAYPAL_PAYMENT_ID": "ID PayPal",
   "SHOP__PAYPAL_PAYMENT_DELAY":"Les utilisateurs peuvent être créditer jusqu'a 5min après le paiement sur PayPal. Ce délai dépends des services de PayPal.",
 
+  "SHOP__NANO_OFFERS": "Offres Nano",
+  "SHOP__NANO_OFFER":"Offre",
+  "SHOP__NANO_HISTORIES":"Historique des transactions Nano",
+  "SHOP__NANO_MAIL":"adresse (nano_...)",
+  "SHOP__NANO_OFFER_ADD": "Ajouter une offre Nano",
+  "SHOP__NANO_OFFER_ADD_SUCCESS": "Offre Nano ajout\u00e9e avec succ\u00e8s !",
+  "SHOP__NANO_OFFER_EDIT": "Modifier une offre Nano",
+  "SHOP__NANO_OFFER_EDIT_SUCCESS": "Offre Nano modifi\u00e9e avec succ\u00e8s !",
+  "SHOP__NANO_OFFER_DELETE_SUCCESS": "L'offre Nano \u00e0 bien \u00e9t\u00e9 supprim\u00e9e !",
+  "SHOP__NANO_PAYMENT_ID": "Block Hash",
+
   "SHOP__OFFER_MONEY_TO_ADD": "Combien de {MONEY_NAME} voulez-vous donner ?",
 
   "SHOP__STARPASS_OFFERS": "Offres StarPass",
@@ -245,6 +256,7 @@
   "HISTORY__ACTION_BUY_MONEY": "Achat de points boutique",
   "HISTORY__ACTION_SEND_MONEY": "Envoie d'argent",
   "HISTORY__ACTION_ADD_PAYPAL_OFFER":"Ajout d'une offre PayPal",
+  "HISTORY__ACTION_ADD_NANO_OFFER":"Ajout d'une offre Nano",
   "HISTORY__ACTION_ADD_STARPASS_OFFER":"Ajout d'une offre StarPass",
   "HISTORY__ACTION_DELETE_PAYPAL_OFFER":"Suppression d'une offre PayPal",
   "HISTORY__ACTION_DELETE_STARPASS_OFFER":"Suppression d'une offre StarPass",

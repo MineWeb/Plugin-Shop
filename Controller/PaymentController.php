@@ -41,6 +41,12 @@ class PaymentController extends ShopAppController
                 $offersByID['paypal'][$value['Paypal']['id']] = $value['Paypal']['name'];
             }
 
+            $this->loadModel('Shop.Nano');
+            $offers['nano'] = $this->Nano->find('all');
+
+            foreach ($offers['nano'] as $key => $value) {
+                $offersByID['nano'][$value['Nano']['id']] = $value['Nano']['name'];
+            }
 
             // Les PaySafeCards c'est différents
 
@@ -131,6 +137,34 @@ class PaymentController extends ShopAppController
             $this->DataTable->initialize($this);
             $this->paginate = array(
                 'fields' => array('PaypalHistory.payment_id', 'PaypalHistory.payment_amount', 'Paypal.name', 'User.pseudo', 'PaypalHistory.credits_gived', 'PaypalHistory.created'),
+                'recursive' => 1
+            );
+            $this->DataTable->mDataProp = true;
+
+            $response = $this->DataTable->getResponse();
+
+            $this->response->body(json_encode($response));
+
+        } else {
+            throw new ForbiddenException();
+        }
+    }
+
+    public function admin_get_nano_histories()
+    {
+        if ($this->isConnected && $this->Permissions->can('SHOP__ADMIN_MANAGE_ITEMS')) {
+            $this->response->body(json_encode([]));
+            exit();
+            $this->loadModel('Shop.Nano');
+
+            $this->autoRender = false;
+            $this->response->type('json');
+
+            $this->DataTable = $this->Components->load('DataTable');
+            $this->modelClass = 'NanoHistory';
+            $this->DataTable->initialize($this);
+            $this->paginate = array(
+                'fields' => array('NanoHistory.block_hash', 'User.pseudo', 'Nano.name', 'NanoHistory.payment_amount', 'NanoHistory.credits_gived', 'NanoHistory.created'),
                 'recursive' => 1
             );
             $this->DataTable->mDataProp = true;
@@ -646,6 +680,128 @@ class PaymentController extends ShopAppController
                                 $this->History->set('EDIT_PAYPAL_OFFER', 'shop');
                                 $this->Session->setFlash($this->Lang->get('SHOP__PAYPAL_OFFER_EDIT_SUCCESS'), 'default.success');
                                 echo json_encode(array('statut' => true, 'msg' => $this->Lang->get('SHOP__PAYPAL_OFFER_EDIT_SUCCESS')));
+                            } else {
+                                echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('USER__ERROR_EMAIL_NOT_VALID')));
+                            }
+                        } else {
+                            echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('ERROR__FILL_ALL_FIELDS')));
+                        }
+                    } else {
+                        echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('ERROR__BAD_REQUEST')));
+                    }
+                } else {
+                    echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('UNKNONW_ID')));
+                }
+            } else {
+                throw new NotFoundException();
+            }
+        } else {
+            throw new ForbiddenException();
+        }
+    }
+
+    /*
+      * ======== Ajout d'une offre Nano (affichage) ===========
+      */
+
+      public function admin_add_nano()
+      {
+          if ($this->isConnected AND $this->Permissions->can('SHOP__ADMIN_MANAGE_PAYMENT')) {
+  
+              $this->set('title_for_layout', $this->Lang->get('SHOP__NANO_OFFER_ADD'));
+              $this->layout = 'admin';
+          } else {
+              $this->redirect('/');
+          }
+      }
+
+    /*
+    * ======== Ajout d'une offre Nano (Traitement AJAX) ===========
+    */
+
+    public function admin_add_nano_ajax()
+    {
+        $this->autoRender = false;
+        if ($this->isConnected AND $this->Permissions->can('SHOP__ADMIN_MANAGE_PAYMENT')) {
+            if ($this->request->is('ajax')) {
+                if (!empty($this->request->data['name']) AND !empty($this->request->data['address']) AND !empty($this->request->data['price']) AND !empty($this->request->data['money'])) {
+                    $this->request->data['price'] = number_format($this->request->data['price'], 2, '.', '');
+                    $this->request->data['money'] = number_format($this->request->data['money'], 2, '.', '');
+                    if (substr( $this->request->data['address'], 0, 4 ) === "nano") { //TODO : Validate nano_ address
+                        $this->loadModel('Shop.Nano');
+                        $this->Nano->read(null, null);
+                        $this->Nano->set($this->request->data);
+                        $this->Nano->save();
+                        $this->History->set('ADD_NANO_OFFER', 'shop');
+                        $this->Session->setFlash($this->Lang->get('SHOP__NANO_OFFER_ADD_SUCCESS'), 'default.success');
+                        echo json_encode(array('statut' => true, 'msg' => $this->Lang->get('SHOP__NANO_OFFER_ADD_SUCCESS')));
+                    } else {
+                        echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('USER__ERROR_EMAIL_NOT_VALID')));
+                    }
+                } else {
+                    echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('ERROR__FILL_ALL_FIELDS')));
+                }
+            } else {
+                echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('ERROR__BAD_REQUEST')));
+            }
+        } else {
+            throw new ForbiddenException();
+        }
+    }
+
+
+    /*
+      * ======== Modification d'une offre Nano (affichage) ===========
+      */
+
+    public function admin_edit_nano($id = false)
+    {
+        if ($this->isConnected AND $this->Permissions->can('SHOP__ADMIN_MANAGE_PAYMENT')) {
+
+            $this->set('title_for_layout', $this->Lang->get('SHOP__NANO_OFFER_EDIT'));
+            $this->layout = 'admin';
+            if ($id != false) {
+                $this->loadModel('Shop.Nano');
+                $search = $this->Nano->find('all', array('conditions' => array('id' => $id)));
+                if (!empty($search)) {
+                    $this->set(compact('id'));
+                    $this->set('nano', $search[0]['Nano']);
+                } else {
+                    $this->redirect(array('controller' => 'shop', 'action' => 'index', 'admin' => true));
+                }
+            } else {
+                $this->redirect(array('controller' => 'shop', 'action' => 'index', 'admin' => true));
+            }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+
+    /*
+      * ======== Modification d'une offre Nano (traitement AJAX) ===========
+      */
+
+    public function admin_edit_nano_ajax($id = false)
+    {
+        $this->autoRender = false;
+        if ($this->isConnected AND $this->Permissions->can('SHOP__ADMIN_MANAGE_PAYMENT')) {
+            if ($id != false) {
+                $this->loadModel('Shop.Nano');
+                $search = $this->Nano->find('all', array('conditions' => array('id' => $id)));
+                if (!empty($search)) {
+                    if ($this->request->is('ajax')) {
+                        if (!empty($this->request->data['name']) AND !empty($this->request->data['address']) AND !empty($this->request->data['price']) AND !empty($this->request->data['money'])) {
+                            $this->request->data['price'] = number_format($this->request->data['price'], 2, '.', '');
+                            $this->request->data['money'] = number_format($this->request->data['money'], 2, '.', '');
+                            if (substr( $this->request->data['address'], 0, 4 ) === "nano") { //TODO : Validate nano_ address
+                                $this->loadModel('Shop.Nano');
+                                $this->Nano->read(null, $id);
+                                $this->Nano->set($this->request->data);
+                                $this->Nano->save();
+                                $this->History->set('EDIT_NANO_OFFER', 'shop');
+                                $this->Session->setFlash($this->Lang->get('SHOP__NANO_OFFER_EDIT_SUCCESS'), 'default.success');
+                                echo json_encode(array('statut' => true, 'msg' => $this->Lang->get('SHOP__NANO_OFFER_EDIT_SUCCESS')));
                             } else {
                                 echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('USER__ERROR_EMAIL_NOT_VALID')));
                             }

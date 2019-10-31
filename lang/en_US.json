@@ -194,6 +194,17 @@
 		"SHOP__PAYPAL_PAYMENT_ID": "PayPal ID",
 		"SHOP__PAYPAL_PAYMENT_DELAY": "Users can be credited up to 5min after payment on PayPal.This delay depends on the services of PayPal.",
 
+		"SHOP__NANO_OFFERS": "Nano Offers",
+		"SHOP__NANO_OFFER": "Offer",
+		"SHOP__NANO_HISTORIES": "Nano transaction history",
+		"SHOP__NANO_MAIL": "adress (nano_...)",
+		"SHOP__NANO_OFFER_ADD": "Add a Nano offer",
+		"SHOP__NANO_OFFER_ADD_SUCCESS": "Nano Offer Successfully Added!",
+		"SHOP__NANO_OFFER_EDIT": "Modify a Nano offer",
+		"SHOP__NANO_OFFER_EDIT_SUCCESS": "Nano Offer Changed Successfully!",
+		"SHOP__NANO_OFFER_DELETE_SUCCESS": "The Nano offer has been deleted!",
+		"SHOP__NANO_PAYMENT_ID": "Block Hash",
+
 		"SHOP__OFFER_MONEY_TO_ADD": "How many {MONEY_NAME} do you want to give?",
 
 		"SHOP__STARPASS_OFFERS": "StarPass Offers",
@@ -232,7 +243,6 @@
 		"HISTORY__CATEGORY_SHOP": "Shop",
 		"HISTORY__CATEGORY_CREDIT_SHOP": "Shop Creditation",
 		"HISTORY__ACTION_VALID_PAYSAFECARD": "Validation of a PaySafeCard",
-		"HISTORY__ACTION_ADD_PAYSAFECARD": "Adding a PaySafeCard",
 		"HISTORY__ACTION_DELETE_VOUCHER": "Suppression of a promotional code",
 		"HISTORY__ACTION_ADD_VOUCHER": "Adding a promotional code",
 		"HISTORY__ACTION_BUY_MONEY_DEDIPASS": "Purchase of credits by Dédipass",
@@ -244,6 +254,7 @@
 		"HISTORY__ACTION_BUY_MONEY": "Buying Shop Points",
 		"HISTORY__ACTION_SEND_MONEY": "Send money",
 		"HISTORY__ACTION_ADD_PAYPAL_OFFER": "Adding a PayPal offer",
+		"HISTORY__ACTION_ADD_NANO_OFFER": "Adding a Nano offer",
 		"HISTORY__ACTION_ADD_STARPASS_OFFER": "Adding a StarPass offer",
 		"HISTORY__ACTION_DELETE_PAYPAL_OFFER": "Deleting a PayPal offer",
 		"HISTORY__ACTION_DELETE_STARPASS_OFFER": "Deleting a StarPass offer",
