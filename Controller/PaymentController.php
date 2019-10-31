@@ -1214,11 +1214,11 @@ class PaymentController extends ShopAppController
     }
 
     /*
-      * ======== Vérification d'une transaction PayPal ===========
+      * ======== Vérification d'une transaction Nano ===========
       */
 
       public function verif_brainblocks()
-      { // cf. https://developer.paypal.com/docs/classic/ipn/gs_IPN/
+      { // cf. https://brainblocks.io/
           $this->autoRender = false;
   
           if ($this->request->is('post')) { //On vérifie l'état de la requête
@@ -1306,7 +1306,7 @@ class PaymentController extends ShopAppController
                                       'payment_amount' => $findOffer['Nano']['price'],
                                       'credits_gived' => $findOffer['Nano']['money']
                                   ));
-                                  $this->PaypalHistory->save();
+                                  $this->NanoHistory->save();
   
                                   $event = new CakeEvent('onBuyPoints', $this, array('credits' => $findOffer['Nano']['money'], 'price' => $findOffer['Nano']['price'], 'plateform' => 'nano', 'user_id' => $user_id));
                                   $this->getEventManager()->dispatch($event);
@@ -1336,7 +1336,7 @@ class PaymentController extends ShopAppController
               
   
           } else {
-              throw new InternalErrorException('PayPal : Not post');
+              throw new InternalErrorException('Nano : Not post');
           }
       }
 
