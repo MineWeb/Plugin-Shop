@@ -726,8 +726,8 @@ class PaymentController extends ShopAppController
             if ($this->request->is('ajax')) {
                 if (!empty($this->request->data['name']) AND !empty($this->request->data['address']) AND !empty($this->request->data['price']) AND !empty($this->request->data['money'])) {
                     $this->request->data['price'] = number_format($this->request->data['price'], 2, '.', '');
-                    $this->request->data['money'] = number_format($this->request->data['money'], 2, '.', '');
-                    if (substr( $this->request->data['address'], 0, 4 ) === "nano") { //TODO : Validate nano_ address
+                    $this->request->data['money'] = number_format($this->request->data['money'], 2, '.', '');                  
+                    if (preg_match("/nano_[13][13-9a-km-uw-z]{59}/",$this->request->data['address'])) {
                         $this->loadModel('Shop.Nano');
                         $this->Nano->read(null, null);
                         $this->Nano->set($this->request->data);
@@ -736,7 +736,7 @@ class PaymentController extends ShopAppController
                         $this->Session->setFlash($this->Lang->get('SHOP__NANO_OFFER_ADD_SUCCESS'), 'default.success');
                         echo json_encode(array('statut' => true, 'msg' => $this->Lang->get('SHOP__NANO_OFFER_ADD_SUCCESS')));
                     } else {
-                        echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('USER__ERROR_EMAIL_NOT_VALID')));
+                        echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('SHOP__ERROR_NANO_ADDRESS_NOT_VALID')));
                     }
                 } else {
                     echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('ERROR__FILL_ALL_FIELDS')));

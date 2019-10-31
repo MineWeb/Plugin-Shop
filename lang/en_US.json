@@ -205,7 +205,7 @@
 		"SHOP__NANO_OFFER_EDIT_SUCCESS": "Nano Offer Changed Successfully!",
 		"SHOP__NANO_OFFER_DELETE_SUCCESS": "The Nano offer has been deleted!",
 		"SHOP__NANO_PAYMENT_ID": "Block Hash",
-
+		"SHOP__ERROR_NANO_ADDRESS_NOT_VALID":"The Nano address in invalid!",
 		"SHOP__OFFER_MONEY_TO_ADD": "How many {MONEY_NAME} do you want to give?",
 
 		"SHOP__STARPASS_OFFERS": "StarPass Offers",
