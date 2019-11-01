@@ -74,6 +74,7 @@
                 
                 <script>
                   function renderBrainblocks(select){
+                    $('#nano-button').html('')
                     var val = $(select).val()
                     var amount_address_currency = val.split('|')
                     brainblocks.Button.render({
