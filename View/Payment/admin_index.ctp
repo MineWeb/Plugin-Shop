@@ -35,7 +35,13 @@ table tr td:last-child > div.btn-group {
                 <h3><?= $Lang->get('SHOP__NANO_OFFERS') ?> <a href="<?= $this->Html->url(array('controller' => 'payment', 'action' => 'add_nano', 'admin' => true)) ?>" class="btn btn-success pull-right"><?= $Lang->get('GLOBAL__ADD') ?></a></h3>
 
                 <br>
-                
+                <div class="alert alert-info">
+                  <p>
+                    <?= $Lang->get('SHOP__NANO_EXPLAIN_CONFIG_1') ?><a target="_blank" href="https://app.brainblocks.io"><b>Brainblocks</b></a><?= $Lang->get('SHOP__NANO_EXPLAIN_CONFIG_2') ?><a target="_blank" href="https://natrium.io"><b>Natrium</b></a>
+                  </p>
+                  <p><?= $Lang->get('SHOP__NANO_EXPLAIN_CONFIG_3') ?><a target="_blank" href="https://www.youtube.com/watch?v=ydVomoXEGe0"><b>YouTube (English)</b></a></p>
+                  <p><?= $Lang->get('SHOP__NANO_EXPLAIN_CONFIG_4') ?><a target="_blank" href="https://www.nano.org/"><b>Nano.org</b></a></p>
+                </div>
 
                 <table class="table table-bordered">
                   <thead>

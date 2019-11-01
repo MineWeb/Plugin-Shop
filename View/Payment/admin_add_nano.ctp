@@ -16,7 +16,7 @@
             </div>
 
             <div class="form-group">
-              <label><?= "nano_..."//$Lang->get('USER__EMAIL') ?></label>
+              <label><?= "nano_..."?></label>
               <input name="address" class="form-control" type="text">
             </div>
 
