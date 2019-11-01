@@ -702,16 +702,15 @@ class PaymentController extends ShopAppController
       * ======== Ajout d'une offre Nano (affichage) ===========
       */
 
-      public function admin_add_nano()
-      {
-          if ($this->isConnected AND $this->Permissions->can('SHOP__ADMIN_MANAGE_PAYMENT')) {
-  
-              $this->set('title_for_layout', $this->Lang->get('SHOP__NANO_OFFER_ADD'));
-              $this->layout = 'admin';
-          } else {
-              $this->redirect('/');
-          }
-      }
+    public function admin_add_nano()
+    {
+        if ($this->isConnected AND $this->Permissions->can('SHOP__ADMIN_MANAGE_PAYMENT')) {
+            $this->set('title_for_layout', $this->Lang->get('SHOP__NANO_OFFER_ADD'));
+            $this->layout = 'admin';
+        } else {
+            $this->redirect('/');
+        }
+    }
 
     /*
     * ======== Ajout d'une offre Nano (Traitement AJAX) ===========
@@ -1215,25 +1214,25 @@ class PaymentController extends ShopAppController
       * ======== Vérification d'une transaction Nano ===========
       */
 
-      public function verif_brainblocks()
-      { // cf. https://brainblocks.io/
-          $this->autoRender = false;
+    public function verif_brainblocks()
+    { // cf. https://brainblocks.io/
+        $this->autoRender = false;
   
-          if ($this->request->is('post')) { //On vérifie l'état de la requête
+        if ($this->request->is('post')) { //On vérifie l'état de la requête
   
-              // On assigne les variables
-              $token = $this->request->data['token'];
-              $user_id = $this->request->data['user_id'];
-              $nano_id = $this->request->data['nano_id'];
-              // On vérifie que l'utilisateur contenu dans le champ custom existe bien
+            // On assigne les variables
+            $token = $this->request->data['token'];
+            $user_id = $this->request->data['user_id'];
+            $nano_id = $this->request->data['nano_id'];
+            // On vérifie que l'utilisateur contenu dans le champ nano_id existe bien
   
-              $this->loadModel('User');
-              if (!$this->User->exist($user_id)) {
-                  throw new InternalErrorException('Nano : Unknown user');
-              }
+            $this->loadModel('User');
+            if (!$this->User->exist($user_id)) {
+                throw new InternalErrorException('Nano : Unknown user');
+            }
   
-              // On prépare la requête de vérification
-              // On fais la requête
+            // On prépare la requête de vérification
+            // On fais la requête
   
               $cURL = curl_init();
               curl_setopt($cURL, CURLOPT_SSL_VERIFYPEER, false);
@@ -1257,88 +1256,83 @@ class PaymentController extends ShopAppController
               $Status = (int)curl_getinfo($cURL, CURLINFO_HTTP_CODE);
               curl_close($cURL);
   
-              // On traite la réponse
+            // On traite la réponse
               
-              // On vérifie que il y ai pas eu d'erreur
+            // On vérifie que il y ai pas eu d'erreur
   
-              if (empty($Response) || $Status != 200 || !$Status) {
-                  throw new InternalErrorException('Nano : Error with BrainBlocks Response');
-              }
+            if (empty($Response) || $Status != 200 || !$Status) {
+                throw new InternalErrorException('Nano : Error with BrainBlocks Response');
+            }
               $result = json_decode($Response, true);
   
-              // On effectue les autres vérifications
+            // On effectue les autres vérifications
 
-                      // On cherche l'offre avec ce montant là
-                      $this->loadModel('Shop.Nano');
-                      $findOffer = $this->Nano->find('first', array('conditions' => array('id' => $nano_id)));
-                      if (!empty($findOffer)) {
+            // On cherche l'offre avec sont id
+            $this->loadModel('Shop.Nano');
+            $findOffer = $this->Nano->find('first', array('conditions' => array('id' => $nano_id)));
+            if (!empty($findOffer)) {
+                // On vérifie que toutes les conditions ont ete remplis
+                if ($result['destination'] == $findOffer['Nano']['address']     // si l'adresse de destination de Brainblocks corresponds a notre addresse de destination
+                    && $result['currency'] == $findOffer['Nano']['currency']    // si l'equivalence a bien ete calcule avec la monnaie FIAT choisis
+                    && $result['amount'] == $findOffer['Nano']['price']         // si le prix paye corresponds au prix de l'offre
+                    && $result['fulfilled'] == true) {                          // si le paiement est complet. s'il ne l'est pas, 
+                                                                                //apres 20 minutes les cryptomonnaies de l'utilisateur lui seront retourne
+                    // On vérifie que le paiement n'est pas déjà en base de données
+                    $this->loadModel('Shop.NanoHistory');
+                    $findPayment = $this->NanoHistory->find('first', array('conditions' => array('token' => $token)));
   
-                          // On vérifie que ce soit le bon mail
-                          if ($result['destination'] == $findOffer['Nano']['address'] 
-                              && $result['currency'] == $findOffer['Nano']['currency'] && $result['amount'] == $findOffer['Nano']['price']
-                              && $result['fulfilled'] == true) {
+                    if (empty($findPayment)) {
   
-                              // On vérifie que le paiement pas déjà en base de données
-                              $this->loadModel('Shop.NanoHistory');
-                              $findPayment = $this->NanoHistory->find('first', array('conditions' => array('token' => $token)));
+                        // On récupére le solde de l'utilisateur et on ajoute ses nouveaux crédits
+                        $sold = $this->User->getFromUser('money', $user_id);
+                        $new_sold = floatval($sold + floatval($findOffer['Nano']['money']));
   
-                              if (empty($findPayment)) {
+                        // On ajoute l'argent à l'utilisateur
+                        $this->User->setToUser('money', $new_sold, $user_id);
   
-                                  // On récupére le solde de l'utilisateur et on ajoute ses nouveaux crédits
-                                  $sold = $this->User->getFromUser('money', $user_id);
-                                  $new_sold = floatval($sold + floatval($findOffer['Nano']['money']));
+                        // On l'ajoute dans l'historique global
+                        $this->HistoryC = $this->Components->load('History');
+                        $this->HistoryC->set('BUY_MONEY', 'shop', null, $user_id);
   
-                                  // On ajoute l'argent à l'utilisateur
-                                  $this->User->setToUser('money', $new_sold, $user_id);
+                        // On l'ajoute dans l'historique des paiements
+                        $this->NanoHistory->create();
+                        $this->NanoHistory->set(array(
+                            'token' => $token,
+                            'user_id' => $user_id,
+                            'offer_id' => $findOffer['Nano']['id'],
+                            'payment_amount' => $findOffer['Nano']['price'],
+                            'currency' => $findOffer['Nano']['currency'],
+                            'credits_gived' => $findOffer['Nano']['money']
+                        ));
+                        $this->NanoHistory->save();
   
-                                  // On l'ajoute dans l'historique global
-                                  $this->HistoryC = $this->Components->load('History');
-                                  $this->HistoryC->set('BUY_MONEY', 'shop', null, $user_id);
+                        $event = new CakeEvent('onBuyPoints', $this, array('credits' => $findOffer['Nano']['money'], 'price' => $findOffer['Nano']['price'], 'plateform' => 'nano', 'user_id' => $user_id));
+                        $this->getEventManager()->dispatch($event);
+                        if ($event->isStopped()) {
+                            return $event->result;
+                        }
   
-                                  // On l'ajoute dans l'historique des paiements
-                                  $this->NanoHistory->create();
-                                  $this->NanoHistory->set(array(
-                                      'token' => $token,
-                                      'user_id' => $user_id,
-                                      'offer_id' => $findOffer['Nano']['id'],
-                                      'payment_amount' => $findOffer['Nano']['price'],
-                                      'currency' => $findOffer['Nano']['currency'],
-                                      'credits_gived' => $findOffer['Nano']['money']
-                                  ));
-                                  $this->NanoHistory->save();
+                        $this->loadModel('Notification');
+                        $this->Notification->setToUser($this->Lang->get('NOTIFICATION__NANO_VALIDED'), $user_id);
   
-                                  $event = new CakeEvent('onBuyPoints', $this, array('credits' => $findOffer['Nano']['money'], 'price' => $findOffer['Nano']['price'], 'plateform' => 'nano', 'user_id' => $user_id));
-                                  $this->getEventManager()->dispatch($event);
-                                  if ($event->isStopped()) {
-                                      return $event->result;
-                                  }
+                        $this->response->statusCode(200);
+                        echo json_encode(array('statut' => true, 'msg' => $this->Lang->get('NOTIFICATION__NANO_VALIDED')));
   
-                                  $this->loadModel('Notification');
-                                  $this->Notification->setToUser($this->Lang->get('NOTIFICATION__NANO_VALIDED'), $user_id);
+                    } else {
+                        throw new InternalErrorException('Nano : Payment already credited');
+                    }
   
-                                  $this->response->statusCode(200);
-                                  echo json_encode(array('statut' => true, 'msg' => $this->Lang->get('NOTIFICATION__NANO_VALIDED')));
+                } else {
+                    throw new InternalErrorException('Nano : invalid address');
+                }
   
-                              } else {
-                                  throw new InternalErrorException('Nano : Payment already credited');
-                              }
-  
-                          } else {
-                              throw new InternalErrorException('Nano : invalid address');
-                          }
-  
-                      } else {
-                          throw new InternalErrorException('Nano : Unknown offer');
-                      }
-  
-                  
-  
-              
-  
-          } else {
-              throw new InternalErrorException('Nano : Not post');
-          }
-      }
+            } else {
+                throw new InternalErrorException('Nano : Unknown offer');
+            }
+        } else {
+            throw new InternalErrorException('Nano : Not post');
+        }
+    }
 
 
     /*

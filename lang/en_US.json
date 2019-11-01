@@ -121,7 +121,6 @@
 		"SHOP__ITEM_NAME": "Name",
 		"SHOP__ITEM_IMG_URL": "URL of the image",
 		"SHOP__ITEM_PRICE": "Price",
-		"SHOP__ITEM_CURRNCY": "Currency",
 		"SHOP__ITEM_QUANTITY": "Quantity",
 		"SHOP__ITEM_TOTAL": "Total",
 		"SHOP__ITEM_DESCRIPTION": "Description",
