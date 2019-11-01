@@ -69,6 +69,7 @@
             <br>
             <div class="collapse" id="Nano">
               <form>
+                <div class="ajax-msg"></div>
                 <script src="https://brainblocks.io/brainblocks.min.js"></script>
                 
                 <script>
@@ -94,11 +95,15 @@
                             contentType: false,
                             dataType : 'json',     
                             success : function(res){ 
-                                if(res.statut)
-                                  window.location.reload()
+                                if(res.statut){
+                                  $('#Nano').find('.ajax-msg').html('<div class="alert alert-success">'+res.msg+'</div>').fadeIn('150');
+                                }else{
+                                  $('#Nano').find('.ajax-msg').html('<div class="alert alert-danger">ERROR : '+res.msg+'</div>').fadeIn('150');
+                                }
+                                  
                             },
                             error: function(res){
-                                console.log(res);
+                              $('#Nano').find('.ajax-msg').html('<div class="alert alert-danger">ERROR : '+res.msg+'</div>').fadeIn('150');
                             }
                         });
                         
