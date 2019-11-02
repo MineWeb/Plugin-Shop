@@ -98,6 +98,7 @@
                             success : function(res){ 
                                 if(res.statut){
                                   $('#Nano').find('.ajax-msg').html('<div class="alert alert-success">'+res.msg+'</div>').fadeIn('150');
+                                  $('body > div.container.plugin-shop > div > div.col-xs-12.col-md-3 > p').html(res.money)
                                 }else{
                                   $('#Nano').find('.ajax-msg').html('<div class="alert alert-danger">ERROR : '+res.msg+'</div>').fadeIn('150');
                                 }

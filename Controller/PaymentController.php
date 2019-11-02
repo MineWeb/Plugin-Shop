@@ -1316,7 +1316,7 @@ class PaymentController extends ShopAppController
                         $this->Notification->setToUser($this->Lang->get('NOTIFICATION__NANO_VALIDED'), $user_id);
   
                         $this->response->statusCode(200);
-                        echo json_encode(array('statut' => true, 'msg' => $this->Lang->get('NOTIFICATION__NANO_VALIDED')));
+                        echo json_encode(array('statut' => true, 'msg' => $this->Lang->get('NOTIFICATION__NANO_VALIDED'), 'money'=>"$new_sold ".(($new_sold > 1 ? $this->Configuration->getMoneyName() : $this->Configuration->getMoneyName(false)))));
   
                     } else {
                         throw new InternalErrorException('Nano : Payment already credited');
