@@ -42,11 +42,16 @@ class PaymentController extends ShopAppController
             }
 
             $this->loadModel('Shop.Nano');
-            $offers['nano'] = $this->Nano->find('all');
-
-            foreach ($offers['nano'] as $key => $value) {
-                $offersByID['nano'][$value['Nano']['id']] = $value['Nano']['name'];
-            }
+            try {
+                // si le plugin est update de x.x.15 a x.x.16 ca throw une execption
+                $offers['nano'] = $this->Nano->find('all');
+                foreach ($offers['nano'] as $key => $value) {
+                    $offersByID['nano'][$value['Nano']['id']] = $value['Nano']['name'];
+                }
+            } catch (\Throwable $th) {
+                // ici on cree les tables necessaires et on redirige sur l'index ud controller
+                $this->Nano->init($this);
+            }  
 
             // Les PaySafeCards c'est différents
 

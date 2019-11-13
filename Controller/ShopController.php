@@ -38,7 +38,13 @@ class ShopController extends ShopAppController
         $this->loadModel('Shop.PaysafecardHistory');
         $histories_dedi = $this->DedipassHistory->find('all',['conditions' => ['created LIKE' => date('Y') . '-' . date('m') . '-%']]);
         $histories_paypal = $this->PaypalHistory->find('all',['conditions' => ['created LIKE' => date('Y') . '-' . date('m') . '-%']]);
-        $histories_nano = $this->NanoHistory->find('all',['conditions' => ['created LIKE' => date('Y') . '-' . date('m') . '-%']]);
+        $this->loadModel('Shop.Nano');
+        try {           
+            $nano_offers = $this->Nano->find('all');
+            $histories_nano = $this->NanoHistory->find('all',['conditions' => ['created LIKE' => date('Y') . '-' . date('m') . '-%']]);
+        } catch (\Throwable $th) {
+            $this->Nano->init($this);
+        }
         $histories_pay = $this->PaysafecardHistory->find('all',['conditions' => ['created LIKE' => date('Y') . '-' . date('m') . '-%']]);
         $histories_star = $this->StarpassHistory->find('all',['conditions' => ['created LIKE' => date('Y') . '-' . date('m') . '-%']]);
         foreach ($histories_dedi as $value){

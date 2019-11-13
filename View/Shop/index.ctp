@@ -2,7 +2,7 @@
 <?= $this->Html->css('Shop.jquery.bootstrap-touchspin.css') ?>
 <div class="container plugin-shop">
   <div class="row">
-    <div class="col-xs-12 col-md-3">
+    <div class="col-md-3">
       <p class="lead"><?= ($isConnected) ? $money: $Lang->get('SHOP__TITLE'); ?></p>
         <div class="list-group">
             <?php
