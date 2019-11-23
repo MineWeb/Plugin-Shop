@@ -28,7 +28,7 @@
        "SHOP__VOUCHERS_HISTORIES": "История использования промокодов",
        "SHOP__VOUCHER_END_DATE": "Дата окончания",
        "SHOP__VOUCHER_START_DATE": "Дата начала",
-       "SHOP__VOUCHER_START_DATE_EXPLAIN":  «Если вы установите время начала другой , чем сейчас, ваше продвижение может быть предварительно отображаться в хранилище , если«отображается опция, цель пользователи не будут BLE использовать его",
+       "SHOP__VOUCHER_START_DATE_EXPLAIN": "Если вы установите время начала другой , чем сейчас, ваше продвижение может быть предварительно отображаться в хранилище , если«отображается опция, цель пользователи не будут BLE использовать его",
        "SHOP__VOUCHER_VALUE_LABEL": "Сокращение",
        "SHOP__VOUCHER_VALUE_INPUT": "В {MONEY_NAME} или проколоть",
        "SHOP__VOUCHER_DISPLAYED": "Опубликовано",
@@ -86,7 +86,7 @@
        "SHOP__DEDIPASS_PUBLICKEY": "Открытый ключ (называемый <i> data-dedipass </ i> в части установки Dédipass)",
        "SHOP__DEDIPASS_HISTORIES": "История транзакций Dedipass",
        "SHOP__DEDIPASS_PAYMENT_ERROR_NOT_CONNECTED": "Вы не вошли в систему, пожалуйста, войдите в систему и повторите попытку (ранее введенный код: {CODE}).",
-       "SHOP__DEDIPASS_PAYMENT_ERROR_INVAID_CODE":  «Введенный код недействителен",
+       "SHOP__DEDIPASS_PAYMENT_ERROR_INVAID_CODE": "Введенный код недействителен",
        "SHOP__DEDIPASS_PAYMENT_ERROR_EMPTY_CODE": "Пожалуйста, введите код.",
        "SHOP__DEDIPASS_PAYMENT_ERROR_EMPTY_RATE": "Пожалуйста, выберите предложение",
        "SHOP__DEDIPASS_PAYMENT_SUCCESS": "Транзакция Dedipass прошла успешно, вам зачислено {MONEY} {MONEY_NAME}.",
@@ -267,3 +267,4 @@
        "HISTORY__ACTION_ENABLE_PAYSAFECARD": "Активация способа оплаты PaySafeCard",
        "HISTORY__ACTION_DISABLE_PAYSAFECARD": "Отключение метода оплаты PaySafeCard",
        "HISTORY__ACTION_ADD_PAYSAFECARD": "Добавление PaySafeCard"
+}
