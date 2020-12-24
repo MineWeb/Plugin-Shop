@@ -59,7 +59,7 @@ class CategoriesController extends ShopAppController
             $this->set(compact('category', 'search_sections'));
 
             if ($this->request->is('post')) {
-                $section = $this->request->data['section'] || !empty($this->request->data['section_id']);
+                $section = !$this->request->data['section'] || !empty($this->request->data['section_id']);
                 if (!empty($this->request->data['name']) AND $section) {
 
                     if (!$this->request->data['section']) $this->request->data['section_id'] = 0;
@@ -175,7 +175,7 @@ class CategoriesController extends ShopAppController
             $this->set(compact('search_sections', 'section_id'));
 
             if ($this->request->is('post')) {
-                $section = $this->request->data['section'] || !empty($this->request->data['section_id']);
+                $section = !$this->request->data['section'] || !empty($this->request->data['section_id']);
                 if (!empty($this->request->data['name']) AND $section) {
 
                     $this->loadModel('Shop.Category');
