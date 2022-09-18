@@ -320,12 +320,13 @@ class ShopController extends ShopAppController
         $this->autoRender = false;
         $this->response->type('json');
 
-        if (!empty($code) && !empty($items_id)) {
+        if (!empty($code) && !empty($items_id) && !$this->isConnected) {
 
             $this->loadModel('Shop.Item');
 
             $items_id = explode(',', $items_id);
             $quantities = explode(',', $quantities);
+            if (count($items_id) !== count($quantities)) return;
             $items = array_combine($items_id, $quantities);
             $total_price = 0;
             $new_price = 0;
